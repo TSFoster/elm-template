@@ -1,4 +1,4 @@
-module Template exposing (Component(..), Template, decoder, empty, encode, fromComponents, map, remainingTokens, replaceToken, toComponents)
+module Template exposing (Component(..), Template, decoder, empty, encode, fromComponents, map, remainingTokens, replaceToken, swapToken, toComponents, toString)
 
 import Json.Decode as Decode exposing (Decoder, Value)
 import Json.Encode as Encode
@@ -120,6 +120,20 @@ toString (Template ( initial, components )) =
         |> List.map (uncurry (++))
         |> String.concat
         |> String.append initial
+
+
+swapToken : token -> token -> Template token -> Template token
+swapToken old =
+    map << swapToIf old
+
+
+swapToIf : a -> a -> a -> a
+swapToIf old new thing =
+    if thing == old then
+        new
+
+    else
+        thing
 
 
 
