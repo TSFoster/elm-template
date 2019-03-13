@@ -1,4 +1,18 @@
-module Template exposing (Component(..), Template, decoder, empty, encode, fromComponents, map, remainingTokens, replaceToken, swapToken, toComponents, toString)
+module Template exposing
+    ( Component(..)
+    , Template
+    , blank
+    , decoder
+    , encode
+    , fromComponents
+    , fromString
+    , map
+    , remainingTokens
+    , replaceToken
+    , swapToken
+    , toComponents
+    , toString
+    )
 
 import Json.Decode as Decode exposing (Decoder, Value)
 import Json.Encode as Encode
@@ -23,14 +37,19 @@ type Component token
 -- COMPOSING
 
 
-empty : Template token
-empty =
-    Template ( "", [] )
+blank : Template token
+blank =
+    fromString ""
+
+
+fromString : String -> Template token
+fromString string =
+    Template ( string, [] )
 
 
 fromComponents : List (Component token) -> Template token
 fromComponents =
-    List.foldr fromComponentsFoldr empty
+    List.foldr fromComponentsFoldr blank
 
 
 fromComponentsFoldr : Component token -> Template token -> Template token
